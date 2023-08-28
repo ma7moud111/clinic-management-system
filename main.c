@@ -23,7 +23,7 @@ void editNode(patient_t* head, u16 given_ID, patient_t newValue);
 
 void main()
 {
-	u16 mode, cntr = 0, flag = 0, first = 0,  slots[5]={-1,-1,-1,-1,-1};
+	u16 mode, cntr = 0, flag = 0, first = 0,  slots[5]={1,1,1,1,1};
 	u8 req_pass[4] = "1234";
 	u8 pass[4];
 	patient_t* head = (patient_t*)malloc(sizeof (patient_t));
@@ -118,21 +118,20 @@ void main()
 				{
 					u16 wanted_ID;
 					printf("Enter the patient ID(must be exist): ");
-					scanf("%d", &wanted_ID);
+					scanf(" %d", &wanted_ID);
 					u16 foundID = findNode(head, wanted_ID);
 					if(foundID == 1){
 						u16 i;
 						u16 wanted_slot;
 						printf("select a slot to reserve:\n");
 						for(i = 0; i<5; i++){
-							if(slots[i] > -1){
+							if(slots[i] > 1){
 								continue;
-							}
-							else{
-								printf("slot %d\n", i);
-							}
+							}	
+							printf("slot %d\n", i);
+							
 						}
-						scanf("%d", &wanted_slot);
+						scanf(" %d", &wanted_slot);
 						slots[wanted_slot] = wanted_ID;
 						printf("slot reserved successfully.\n");
 					}
@@ -144,22 +143,20 @@ void main()
 				{
 					u16 wanted_ID;
 					printf("Enter the patient ID(must be exist): ");
-					scanf("%d", &wanted_ID);
+					scanf(" %d", &wanted_ID);
 					u16 foundID = findNode(head, wanted_ID);
 					if(foundID == 1){
 						u16 i;
 						u16 wanted_slot;
 						printf("select a slot to cancel(must be reserved):\n");
 						for(i = 0; i<5; i++){
-							if(slots[i] <= -1){
+							if(slots[i] == 1){
 								continue;
 							}
-							else{
-								printf("slot %d\n", i);
-							}
+							printf("slot %d\n", i);
 						}
-						scanf("%d", &wanted_slot);
-						slots[wanted_slot] = 0;
+						scanf(" %d", &wanted_slot);
+						slots[wanted_slot] = 1;
 						printf("slot canceled successfully.\n");
 					}
 					else{
@@ -177,12 +174,12 @@ void main()
 			u16 useroption;
 			printf("select option:\n");
 			printf("1- view patient record.\n2- view today's reservations.\n");
-			scanf("%d", &useroption);
+			scanf(" %d", &useroption);
 			if(useroption == 1)
 			{
 				u16 wanted_ID;
 				printf("Enter the patient ID(must be exist): ");
-				scanf("%d", &wanted_ID);
+				scanf(" %d", &wanted_ID);
 				u16 foundID = findNode(head, wanted_ID);
 				if(foundID == 1){
 					printf("Patient found:\n");
@@ -220,6 +217,10 @@ void main()
 		else{
 			continue;
 		}
+	}
+	u16 k;
+	for(k = 0; k<5; k++){
+		slots[k] = -1;
 	}
 }
 
