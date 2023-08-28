@@ -204,7 +204,7 @@ void main()
 			}
 			else
 			{
-				printf("Invalid user option.\n")
+				printf("Invalid user option.\n");
 			}
 			break;
 			default:
