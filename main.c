@@ -1,25 +1,10 @@
-/*******************************************
-*	Project Name: Clinic Managment System. *
-*	Coded by: Mahmoud Sayed.               *
-********************************************/
 
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include "STD_TYPES.h"
+/************************************************
+*	Project Name: Clinic Managment System.      *
+*	Coded by: Mahmoud Sayed.                    *
+************************************************/
 
-typedef struct patient{
-	u8 name[20];
-	u16 age;
-	u8 gender;
-	u16 ID;
-	struct patient* next;
-}patient_t;
-
-void addNodeToEnd(patient_t* Head, patient_t value);
-void printNode(patient_t* head, u16 given_ID);
-u16 findNode(patient_t* head, u16 given_ID);
-void editNode(patient_t* head, u16 given_ID, patient_t newValue);
+#include "linkedlist.h"
 
 void main()
 {
@@ -118,21 +103,22 @@ void main()
 				{
 					u16 wanted_ID;
 					printf("Enter the patient ID(must be exist): ");
-					scanf(" %d", &wanted_ID);
+					scanf("%d", &wanted_ID);
+					u16 identification = wanted_ID;
 					u16 foundID = findNode(head, wanted_ID);
 					if(foundID == 1){
-						u16 i;
+						u16 idx;
 						u16 wanted_slot;
 						printf("select a slot to reserve:\n");
-						for(i = 0; i<5; i++){
-							if(slots[i] > 1){
+						for(idx = 0; idx<5; idx++){
+							if(slots[idx] != 1){
 								continue;
 							}	
-							printf("slot %d\n", i);
+							printf("slot %d\n", idx);
 							
 						}
-						scanf(" %d", &wanted_slot);
-						slots[wanted_slot] = wanted_ID;
+						scanf("%d", &wanted_slot);
+						slots[wanted_slot] = identification;
 						printf("slot reserved successfully.\n");
 					}
 					else{
@@ -143,19 +129,19 @@ void main()
 				{
 					u16 wanted_ID;
 					printf("Enter the patient ID(must be exist): ");
-					scanf(" %d", &wanted_ID);
+					scanf("%d", &wanted_ID);
 					u16 foundID = findNode(head, wanted_ID);
 					if(foundID == 1){
-						u16 i;
+						u16 idx;
 						u16 wanted_slot;
 						printf("select a slot to cancel(must be reserved):\n");
-						for(i = 0; i<5; i++){
-							if(slots[i] == 1){
+						for(idx = 0; idx<5; idx++){
+							if(slots[idx] == 1){
 								continue;
 							}
-							printf("slot %d\n", i);
+							printf("slot %d\n", idx);
 						}
-						scanf(" %d", &wanted_slot);
+						scanf("%d", &wanted_slot);
 						slots[wanted_slot] = 1;
 						printf("slot canceled successfully.\n");
 					}
@@ -179,7 +165,7 @@ void main()
 			{
 				u16 wanted_ID;
 				printf("Enter the patient ID(must be exist): ");
-				scanf(" %d", &wanted_ID);
+				scanf("%d", &wanted_ID);
 				u16 foundID = findNode(head, wanted_ID);
 				if(foundID == 1){
 					printf("Patient found:\n");
@@ -192,9 +178,9 @@ void main()
 			else if(useroption == 2)
 			{
 				u16 i;
-				printf("All today's reservations: ");
+				printf("All today's reservations:\n ");
 				for(i = 0; i<5; i++){
-					if(slots[i] > -1){
+					if(slots[i] > 1){
 						printf("slot %d - patient ID: %d\n", i, slots[i]);
 					}
 				}
@@ -205,7 +191,7 @@ void main()
 			}
 			break;
 			default:
-			printf("wrong mode!");
+			printf("wrong mode!\n");
 			
 		}
 		u8 cont;
@@ -220,82 +206,8 @@ void main()
 	}
 	u16 k;
 	for(k = 0; k<5; k++){
-		slots[k] = -1;
+		slots[k] = 1;
 	}
 }
 
 
-void addNodeToEnd(patient_t* Head, patient_t value){
-	
-	/*creating a temp node to traverse through the linked list and starting from head node*/
-	patient_t* temp = Head;
-	
-	/*creating a new node*/
-	patient_t* newNode = (patient_t*)malloc(sizeof(patient_t));
-	
-	/* assign the new node data*/
-	strcpy(newNode->name,value.name);
-	newNode->age = value.age;
-	newNode->gender = value.gender;
-	newNode->ID = value.ID;
-	
-	/* traverse through the linked list to reach the final node*/
-	while(temp->next != NULL){
-		temp = temp->next;
-	}
-	
-	/*make the current node points to the final new node created*/
-	temp->next = newNode;
-	
-	/*make the new node points to NULL*/
-	newNode->next = NULL;
-}
-
-void printNode(patient_t* head, u16 given_ID){
-	patient_t* temp = head;
-	u16 f = 0;
-	while(temp != NULL){
-		if(temp->ID == given_ID){
-			f = 1;
-			break;
-		}
-		temp = temp->next;
-	}
-	if(f){
-		printf("patient name: %s\n", temp->name);
-		printf("patient age: %d\n", temp->age);
-		printf("patient gender: %c\n", temp->gender);
-		printf("patient ID: %d\n", temp->ID);
-	}
-}
-
-u16 findNode(patient_t* head, u16 given_ID){
-	patient_t* temp = head;
-	while(temp != NULL){
-		if(temp->ID == given_ID){
-			return 1;
-		}
-		temp = temp->next;
-	}
-	return 0;
-}
-
-void editNode(patient_t* head, u16 given_ID, patient_t newValue){
-	
-	patient_t* temp = head;
-	u16 f = 0;
-	while(temp != NULL){
-		if(temp->ID == given_ID){
-			f = 1;
-			break;
-		}
-		temp = temp->next;
-	}
-	if(f){
-		strcpy(temp->name, newValue.name);
-		temp->age = newValue.age;
-		temp->gender = newValue.gender;
-		temp->ID = newValue.ID;
-	}
-	
-}
